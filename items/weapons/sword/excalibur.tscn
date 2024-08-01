@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkvv8nwrdv3k3"]
+
+[ext_resource type="PackedScene" uid="uid://c2mxs5lnjp22x" path="res://items/weapons/sword/excalibur.glb" id="1_7tipu"]
+
+[node name="excalibur" instance=ExtResource("1_7tipu")]
+
+[node name="Cylinder" parent="." index="0"]
+transform = Transform3D(0.08, 0, 0, 0, 0.364, 0, 0, 0, 0.08, 0, 3.5, 0)

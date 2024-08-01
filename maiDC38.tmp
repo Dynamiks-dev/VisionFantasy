@@ -1,0 +1,104 @@
+[gd_scene load_steps=19 format=3 uid="uid://cl0kkftafumau"]
+
+[ext_resource type="Script" path="res://main.cs" id="1_olps1"]
+[ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_l0dnk"]
+[ext_resource type="Texture2D" uid="uid://cnsi30sh4iy36" path="res://textures/ground/a3ab617780e86740e3c0b4053b760c99.jpg" id="2_vbf2r"]
+[ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_572al"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="4_lrta7"]
+[ext_resource type="PackedScene" uid="uid://boiyfhpidcljj" path="res://items/Weapons/Raplier/asuna_replier.glb" id="4_s3foa"]
+[ext_resource type="PackedScene" uid="uid://qcmgcdnkgmq6" path="res://player.tscn" id="4_ypalt"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_cqx1p"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/overrides/player/player_body.gd" id="6_sscgd"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/overrides/player/player_body.tscn" id="7_3tjmd"]
+[ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="9_0i50m"]
+[ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="10_p5ymx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n0jps"]
+sky_top_color = Color(0.233747, 0.447969, 0.744778, 1)
+sky_horizon_color = Color(0.608437, 0.654242, 0.719445, 1)
+ground_horizon_color = Color(0.608437, 0.654242, 0.719445, 1)
+
+[sub_resource type="Sky" id="Sky_aeksf"]
+sky_material = SubResource("ProceduralSkyMaterial_n0jps")
+
+[sub_resource type="Environment" id="Environment_yegcw"]
+background_mode = 2
+background_energy_multiplier = 1.5
+sky = SubResource("Sky_aeksf")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_v1wwo"]
+size = Vector2(20, 20)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_apueg"]
+albedo_texture = ExtResource("2_vbf2r")
+albedo_texture_force_srgb = true
+metallic_specular = 0.0
+uv1_scale = Vector3(10, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jm3nd"]
+size = Vector3(20, 0.2, 20)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_olps1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yegcw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0.0060387, 0.490905, 0.871192, -0.499964, 0.755984, -0.422522, 1.4251, 6.6137, -0.436708)
+shadow_enabled = true
+
+[node name="Scene" type="Node3D" parent="."]
+
+[node name="Ground" type="StaticBody3D" parent="Scene"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Scene/Ground"]
+mesh = SubResource("QuadMesh_v1wwo")
+surface_material_override/0 = SubResource("StandardMaterial3D_apueg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Scene/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.100914, 0)
+shape = SubResource("BoxShape3D_jm3nd")
+
+[node name="Player" parent="Scene" groups=["Player"] instance=ExtResource("4_ypalt")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+
+[node name="asuna_replier" parent="Scene" instance=ExtResource("4_s3foa")]
+transform = Transform3D(-0.00866433, 0.00710552, 0.0993702, -0.0503342, 0.0857658, -0.0105215, -0.0859733, -0.0509288, -0.00385453, 0.707063, 0.565759, -1.53628)
+
+[node name="StartXR" parent="." instance=ExtResource("4_lrta7")]
+
+[node name="XRToolsPlayerBody" type="CharacterBody3D" parent="."]
+top_level = true
+script = ExtResource("6_sscgd")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="XRToolsPlayerBody"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XRToolsPlayerBody/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+fov = 110.0
+
+[node name="LeftController" type="XRController3D" parent="XRToolsPlayerBody/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.7, -0.2)
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="LeftHand" parent="XRToolsPlayerBody/XROrigin3D/LeftController" instance=ExtResource("2_l0dnk")]
+
+[node name="MovementTurn" parent="XRToolsPlayerBody/XROrigin3D/LeftController" instance=ExtResource("6_cqx1p")]
+
+[node name="RightController" type="XRController3D" parent="XRToolsPlayerBody/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.7, -0.2)
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="RightHand" parent="XRToolsPlayerBody/XROrigin3D/RightController" instance=ExtResource("3_572al")]
+
+[node name="MovementJump" parent="XRToolsPlayerBody/XROrigin3D/RightController" instance=ExtResource("10_p5ymx")]
+
+[node name="FunctionTeleport" parent="XRToolsPlayerBody/XROrigin3D/RightController" instance=ExtResource("9_0i50m")]
+
+[node name="PlayerBody" parent="XRToolsPlayerBody/XROrigin3D" instance=ExtResource("7_3tjmd")]

@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4uagpha8feqj"]
+
+[ext_resource type="PackedScene" uid="uid://51v3thd4ritf" path="res://items/weapons/sword/Item_WeaSwtBehemoth.glb" id="1_lkdta"]
+[ext_resource type="Texture2D" path="res://items/weapons/sword/Item_WeaSwtBehemoth.dds" id="2_1fngo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hux2t"]
+albedo_texture = ExtResource("2_1fngo")
+
+[node name="Item_WeaSwtBehemoth" instance=ExtResource("1_lkdta")]
+
+[node name="Mesh" parent="." index="0"]
+visible = false
+
+[node name="Mesh2" parent="." index="1"]
+surface_material_override/0 = SubResource("StandardMaterial3D_hux2t")
