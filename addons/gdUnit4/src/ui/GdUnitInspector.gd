@@ -2,8 +2,6 @@
 class_name GdUnitInspecor
 extends Panel
 
-const ScriptEditorContextMenuHandler = preload("res://addons/gdUnit4/src/ui/menu/ScriptEditorContextMenuHandler.gd")
-const EditorFileSystemContextMenuHandler = preload("res://addons/gdUnit4/src/ui/menu/EditorFileSystemContextMenuHandler.gd")
 
 var _command_handler := GdUnitCommandHandler.instance()
 
@@ -20,6 +18,12 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		add_script_editor_context_menu()
 		add_file_system_dock_context_menu()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		ScriptEditorControls.unregister_context_menu()
+		EditorFileSystemControls.unregister_context_menu()
 
 
 func _process(_delta: float) -> void:
@@ -48,13 +52,13 @@ func _getEditorThemes() -> void:
 func add_file_system_dock_context_menu() -> void:
 	var is_test_suite := func is_visible(script: Script, is_ts: bool) -> bool:
 		if script == null:
-			return false
+			return true
 		return GdObjects.is_test_suite(script) == is_ts
 	var menu :Array[GdUnitContextMenuItem] = [
 		GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_RUN, "Run Testsuites", "Play", is_test_suite.bind(true), _command_handler.command(GdUnitCommandHandler.CMD_RUN_TESTSUITE)),
 		GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_DEBUG, "Debug Testsuites", "PlayStart", is_test_suite.bind(true), _command_handler.command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG)),
 	]
-	add_child(EditorFileSystemContextMenuHandler.new(menu))
+	EditorFileSystemControls.register_context_menu(menu)
 
 
 func add_script_editor_context_menu() -> void:
@@ -65,7 +69,7 @@ func add_script_editor_context_menu() -> void:
 		GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_DEBUG, "Debug Tests", "PlayStart", is_test_suite.bind(true),_command_handler.command(GdUnitCommandHandler.CMD_RUN_TESTCASE_DEBUG)),
 		GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.CREATE_TEST, "Create Test", "New", is_test_suite.bind(false), _command_handler.command(GdUnitCommandHandler.CMD_CREATE_TESTCASE))
 	]
-	add_child(ScriptEditorContextMenuHandler.new(menu))
+	ScriptEditorControls.register_context_menu(menu)
 
 
 func _on_MainPanel_run_testsuite(test_suite_paths: Array, debug: bool) -> void:

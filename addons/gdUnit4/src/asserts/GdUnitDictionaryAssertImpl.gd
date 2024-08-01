@@ -30,16 +30,11 @@ func report_error(error :String) -> GdUnitDictionaryAssert:
 
 
 func failure_message() -> String:
-	return _base.failure_message()
+	return _base._current_error_message
 
 
 func override_failure_message(message :String) -> GdUnitDictionaryAssert:
 	_base.override_failure_message(message)
-	return self
-
-
-func append_failure_message(message :String) -> GdUnitDictionaryAssert:
-	_base.append_failure_message(message)
 	return self
 
 

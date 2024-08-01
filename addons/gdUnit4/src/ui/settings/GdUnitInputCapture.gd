@@ -11,10 +11,9 @@ var _input_event: InputEventKey
 
 func _ready() -> void:
 	reset()
-	self_modulate = Color.WHITE
 	_tween = create_tween()
-	_tween.set_loops()
-	_tween.tween_property(%Label, "self_modulate", Color(1, 1, 1, .8), 1.0).from_current().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN_OUT)
+	_tween.set_loops(-1)
+	_tween.tween_property(self, "modulate", Color(0, 0, 0, .1), 1.0).from_current().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
 
 func reset() -> void:

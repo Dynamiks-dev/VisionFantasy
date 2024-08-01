@@ -1,5 +1,8 @@
 extends Node
 
+signal sync_rpc_id_result_received
+
+
 @onready var _client :GdUnitTcpClient = $GdUnitTcpClient
 @onready var _executor :GdUnitTestSuiteExecutor = GdUnitTestSuiteExecutor.new()
 

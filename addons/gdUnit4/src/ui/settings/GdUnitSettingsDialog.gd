@@ -54,30 +54,25 @@ func setup_properties(properties_parent: Node, property_category: String) -> voi
 	theme_.set_constant("h_separation", "GridContainer", 12)
 	var last_category := "!"
 	var min_size_overall := 0.0
-	var labels := []
-	var inputs := []
-	var info_labels := []
-	var grid: GridContainer = null
 	for p in category_properties:
 		var min_size_ := 0.0
+		var grid := GridContainer.new()
+		grid.columns = 4
+		grid.theme = theme_
 		var property: GdUnitProperty = p
 		var current_category := property.category()
-		if not grid or current_category != last_category:
-			grid = GridContainer.new()
-			grid.columns = 4
-			grid.theme = theme_
-
+		if current_category != last_category:
 			var sub_category: Node = _properties_template.get_child(3).duplicate()
 			sub_category.get_child(0).text = current_category.capitalize()
 			sub_category.custom_minimum_size.y = _font_size + 16
 			properties_parent.add_child(sub_category)
-			properties_parent.add_child(grid)
 			last_category = current_category
 		# property name
 		var label: Label = _properties_template.get_child(0).duplicate()
 		label.text = _to_human_readable(property.name())
-		labels.append(label)
+		label.custom_minimum_size = Vector2(_font_size * 20, 0)
 		grid.add_child(label)
+		min_size_ += label.size.x
 
 		# property reset btn
 		var reset_btn: Button = _properties_template.get_child(1).duplicate()
@@ -88,21 +83,18 @@ func setup_properties(properties_parent: Node, property_category: String) -> voi
 
 		# property type specific input element
 		var input: Node = _create_input_element(property, reset_btn)
-		inputs.append(input)
+		input.custom_minimum_size = Vector2(_font_size * 15, 0)
 		grid.add_child(input)
+		min_size_ += input.size.x
 		reset_btn.pressed.connect(_on_btn_property_reset_pressed.bind(property, input, reset_btn))
 		# property help text
 		var info: Node = _properties_template.get_child(2).duplicate()
 		info.text = property.help()
-		info_labels.append(info)
 		grid.add_child(info)
+		min_size_ += info.text.length() * _font_size
 		if min_size_overall < min_size_:
 			min_size_overall = min_size_
-	for controls: Array in [labels, inputs, info_labels]:
-		var _size: float = controls.map(func(c: Control) -> float: return c.size.x).max()
-		min_size_overall += _size
-		for control: Control in controls:
-			control.custom_minimum_size.x = _size
+		properties_parent.add_child(grid)
 	properties_parent.custom_minimum_size.x = min_size_overall
 
 
@@ -269,13 +261,11 @@ func _on_shortcut_change(input_button: Button, property: GdUnitProperty, reset_b
 	_input_capture.set_custom_minimum_size(_properties_shortcuts.get_size())
 	_input_capture.visible = true
 	_input_capture.show()
-	_properties_shortcuts.visible = false
 	set_process_input(false)
 	_input_capture.reset()
 	var input_event: InputEventKey = await _input_capture.input_completed
 	input_button.text = input_event.as_text()
 	_on_property_text_changed(to_keys(input_event), property, reset_btn)
-	_properties_shortcuts.visible = true
 	set_process_input(true)
 
 

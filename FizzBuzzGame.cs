@@ -3,23 +3,23 @@ using System;
 
 public partial class FizzBuzzGame : Node
 {
-	public static string SayResult(int input)
-	{
-		private string FizzBuzzResult = "FizzBuzz";
-		private int FizzBuzzValue = 15;
-		private string FizzResult = "Fizz";
-		private int FizzValue = 3;
-		private string BuzzResult = "Buzz";
-		private int BuzzValue = 5;
+	// public static string SayResult(int input)
+	// {
+	// 	private string FizzBuzzResult = "FizzBuzz";
+	// 	private int FizzBuzzValue = 15;
+	// 	private string FizzResult = "Fizz";
+	// 	private int FizzValue = 3;
+	// 	private string BuzzResult = "Buzz";
+	// 	private int BuzzValue = 5;
 
-		return input switch
-		{
-			_ when input % FizzBuzzValue => FizzBuzzResult,
-			_ when input.IsMultipleOf(FizzValue) => FizzResult,
-			_ when input.IsMultipleOf(BuzzValue) => BuzzResult,
-			_ => input.ToString()
-		};
-	}
+	// 	return input switch
+	// 	{
+	// 		_ when input % FizzBuzzValue => FizzBuzzResult,
+	// 		_ when input.IsMultipleOf(FizzValue) => FizzResult,
+	// 		_ when input.IsMultipleOf(BuzzValue) => BuzzResult,
+	// 		_ => input.ToString()
+	// 	};
+	// }
 
 
 

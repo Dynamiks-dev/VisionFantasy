@@ -5,11 +5,11 @@ using System;
 public partial class FizzBuzzTest : Node
 {
 	//[Fact]
-	public void answer_one_if_input_is_1()
-	{
-		var answer = new FizzBuzzGame().SayResult(1);
-		answer.Should().Be("1");
-	}
+	// public void answer_one_if_input_is_1()
+	// {
+	// 	var answer = new FizzBuzzGame().SayResult(1);
+	// 	answer.Should().Be("1");
+	// }
 
 
 

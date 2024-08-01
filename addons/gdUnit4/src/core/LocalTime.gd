@@ -3,7 +3,6 @@ class_name LocalTime
 extends Resource
 
 enum TimeUnit {
-	DEFAULT = 0,
 	MILLIS = 1,
 	SECOND = 2,
 	MINUTE = 3,
